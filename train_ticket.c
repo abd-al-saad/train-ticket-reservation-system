@@ -1,6 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 #define max_seat 5
 #define n_lenth 50
 int seats[max_seat];
@@ -47,30 +47,30 @@ void remove_booked(int seatNumber,char passengerName[]) {
     }
 }
 void add_waiting(char name[]) {
-    wait *new_name = malloc(sizeof(wait));
+    wait *new_name=malloc(sizeof(wait));
     strcpy(new_name->name, name);
-    new_name->next = NULL;
-    if (rear) rear->next = new_name;
-    else front = new_name;
-    rear = new_name;
+    new_name->next=NULL;
+    if(rear)rear->next=new_name;
+    else front=new_name;
+    rear=new_name;
 }
 void remove_waiting(char name[]) {
-    if (!front) return;
-    wait *temp = front;
-    strcpy(name, temp->name);
-    front = front->next;
-    if (!front) rear = NULL;
+    if(!front)return;
+    wait *temp=front;
+    strcpy(name,temp->name);
+    front =front->next;
+    if(!front) rear = NULL;
     free(temp);
 }
-// stack use kora hoiche
+// stack
 void push_cancel(char name[],int seat) {
     cancel*new_name=malloc(sizeof(cancel));
     strcpy(new_name->name,name);
     new_name->seat=seat;
     new_name->next=top;
-    top = new_name;
+    top=new_name;
 }
-// stack er pop function banao hoise seat er index cancel korar jonno
+//stack pop
 int pop_cancel(char name[]){
     if (!top)
     return -1;
@@ -96,7 +96,7 @@ void book_ticket(){
     }
     if (seat != -1) {
         add_booked(name, seat);
-        printf("Seat %d booked for %s\n", seat, name);
+        printf ("Seat no %d booked for %s\n",seat,name);
     } else {
         add_waiting(name);
         printf("No seats available, %s added to waiting list\n", name);
@@ -104,24 +104,24 @@ void book_ticket(){
 }
 void cancel_ticket(){ // user seat number dibe nijer ta dekhe
     int seat;
-    printf("Enter seat number to cancel: ");
+    printf  ("Enter seat number which you want to cancel ");
     scanf("%d",&seat);
     getchar();
-    if (seat < 1||seat>max_seat||seats[seat-1]==0) {
+    if (seat<1||seat>max_seat||seats[seat-1]==0) {
         printf("Invalid seat number\n");
         return;
     }
     char name[n_lenth];
     remove_booked(seat, name);
-    seats[seat - 1] = 0;
-    push_cancel(name, seat);
-    printf("Seat %d cancelled for %s\n", seat, name);
+    seats[seat-1]=0;
+    push_cancel(name,seat);
+    printf ("Seat %d cancelled for %s\n",seat,name);
     if (front){
-        char wname[n_lenth];
-        remove_waiting(wname);
-        seats[seat - 1] = 1;
-        add_booked(wname, seat);
-        printf("%s moved from waiting list to seat %d\n", wname, seat);
+        char waitingname[n_lenth];
+        remove_waiting(waitingname);
+        seats[seat-1]=1;
+        add_booked(waitingname,seat);
+        printf ("%s moved from waiting list to seat %d\n",waitingname,seat);
     }
 }
 void restore_ticket(){
@@ -134,9 +134,9 @@ void restore_ticket(){
     if (seats[seat-1]==0) {
         seats[seat-1]=1;
         add_booked(name, seat);
-        printf("Seat %d restored for %s\n",seat,name);
+        printf ("Seat %d restored for %s\n",seat,name);
     } else {
-        printf("Seat %d is already taken, cannot restore\n", seat);
+        printf ("Seat %d is already taken, cannot restore\n",seat);
     }
 }
 void display_booked() {
@@ -147,7 +147,7 @@ void display_booked() {
     }
     printf("Booked Passengers:\n");
     while (currentPassenger) {
-        printf("Seat %d: %s\n",currentPassenger->seat,currentPassenger->name);
+        printf ("Seat  no %d: %s\n",currentPassenger->seat,currentPassenger->name);
         currentPassenger=currentPassenger->next;
     }
 }
@@ -161,15 +161,15 @@ void display_waiting() {
     printf("Waiting List:\n");
     while (currentWaitingPassenger) {
     printf("%s\n", currentWaitingPassenger->name);
-    currentWaitingPassenger = currentWaitingPassenger->next;
+    currentWaitingPassenger=currentWaitingPassenger->next;
     }
 }
 // User Menu
 int main() {
     int choice;
-    for (int i = 0; i < max_seat; i++)
-    seats[i]=0;// initial seat 0 theke 4 porjonto
-    while (1) {// user er kache nicher printf er vitorer message gulo show korbe
+    for(int i=0;i< max_seat;i++)
+    seats[i]=0;
+    while (1){
     printf("\n\t\t\t\t\tTrain Ticket Reservation \n");
     printf("\t\t\t\t\t1. Book Ticket\n");
     printf("\t\t\t\t\t2. Cancel Ticket\n");
@@ -179,15 +179,22 @@ int main() {
     printf("\t\t\t\t\t0. Exit\n");
     printf("\t\t\t\t\tEnter choice: ");
     scanf("%d", &choice);
-    getchar();// getchar user kora hoise scanf er por option choose korar jonno jeno space thake.
+    getchar();
         switch (choice) {//akekta function switch case diye define kora hoise
-            case 1: book_ticket(); break;
-            case 2: cancel_ticket(); break;
-            case 3: restore_ticket(); break;
-            case 4: display_booked(); break;
-            case 5: display_waiting(); break;
-            case 0: exit(0);
+            case 1: book_ticket();
+            break;
+            case 2: cancel_ticket();
+            break;
+            case 3: restore_ticket();
+            break;
+            case 4: display_booked();
+            break;
+            case 5: display_waiting();
+            break;
+            case 0:
+            exit(0);
             default: printf("Invalid choice\n");
         }
     }
 }
+
